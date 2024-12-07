@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<PublishSingleFile>false</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+		<StartupObject>Event_Randomizer.EventRandomizerForm</StartupObject>
+		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\EventRandomizer\</BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="bin\**" />
+	  <Compile Remove="build output\**" />
+	  <Compile Remove="Properties\**" />
+	  <Compile Remove="Resources\**" />
+	  <Compile Remove="Text to Image\**" />
+	  <EmbeddedResource Remove="bin\**" />
+	  <EmbeddedResource Remove="build output\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <EmbeddedResource Remove="Resources\**" />
+	  <EmbeddedResource Remove="Text to Image\**" />
+	  <None Remove="bin\**" />
+	  <None Remove="build output\**" />
+	  <None Remove="Properties\**" />
+	  <None Remove="Resources\**" />
+	  <None Remove="Text to Image\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Text to Image.cs" />
+	</ItemGroup>
+	
+</Project>

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<PublishSingleFile>false</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+		<StartupObject>Text_to_Image.TextToImageForm</StartupObject>
+		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\TextToImage\</BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="bin\**" />
+	  <Compile Remove="build output\**" />
+	  <Compile Remove="Event Randomizer\**" />
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="bin\**" />
+	  <EmbeddedResource Remove="build output\**" />
+	  <EmbeddedResource Remove="Event Randomizer\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="bin\**" />
+	  <None Remove="build output\**" />
+	  <None Remove="Event Randomizer\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Event Randomizer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	    <None Remove="Resources\DigitalDisco-Thin.ttf" />
+	    <EmbeddedResource Include="Resources\DigitalDisco-Thin.ttf" />
+	</ItemGroup>
+	
+</Project>

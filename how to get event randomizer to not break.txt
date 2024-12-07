@@ -1,0 +1,6 @@
+- go to project settings
+- check that the first few like "WinExe" and "net8.0[etc.]" are the exact same as in the other projects
+- save like 5 times for good luck
+- F5 to build it
+
+-> if it built correctly there, do the full building process

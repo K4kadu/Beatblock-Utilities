@@ -194,6 +194,20 @@ namespace Event_Randomizer
                 }
             };
 
+            minValueBox.Leave += (sender, e) =>
+            {
+                if (minValueBox.Text.Equals(""))
+                {
+                    minValueBox.Text = "0";
+                    return;
+                }
+
+                if (minValueBox.Text[0].Equals('.'))
+                {
+                    minValueBox.Text = "0" + minValueBox.Text;
+                }
+            };
+
             maxValueLabel = new Label
             {
                 Text = "maximum value:",
@@ -228,6 +242,20 @@ namespace Event_Randomizer
                 }
             };
 
+            maxValueBox.Leave += (sender, e) =>
+            {
+                if (maxValueBox.Text.Equals(""))
+                {
+                    maxValueBox.Text = "0";
+                    return;
+                }
+
+                if (maxValueBox.Text[0].Equals('.'))
+                {
+                    maxValueBox.Text = "0" + maxValueBox.Text;
+                }
+            };
+
             roundValueLabel = new Label
             {
                 Text = "rounded to\na multiple of:",
@@ -259,6 +287,20 @@ namespace Event_Randomizer
                 if (!char.IsDigit(keyChar))
                 {
                     e.Handled = true; // Block the key
+                }
+            };
+
+            roundValueBox.Leave += (sender, e) =>
+            {
+                if (roundValueBox.Text.Equals(""))
+                {
+                    roundValueBox.Text = "1";
+                    return;
+                }
+
+                if (roundValueBox.Text[0].Equals('.'))
+                {
+                    roundValueBox.Text = "0" + roundValueBox.Text;
                 }
             };
 
@@ -366,6 +408,20 @@ namespace Event_Randomizer
                 }
             };
 
+            stepSize.Leave += (sender, e) =>
+            {
+                if (stepSize.Text.Equals(""))
+                {
+                    stepSize.Text = "1";
+                    return;
+                }
+
+                if (stepSize.Text[0].Equals('.'))
+                {
+                    stepSize.Text = "0" + stepSize.Text;
+                }
+            };
+
             stepSizeLabelToo = new Label
             {
                 Text = "beats,",
@@ -408,6 +464,20 @@ namespace Event_Randomizer
                 }
             };
 
+            startingBeat.Leave += (sender, e) =>
+            {
+                if (startingBeat.Text.Equals(""))
+                {
+                    startingBeat.Text = "0";
+                    return;
+                }
+
+                if (startingBeat.Text[0].Equals('.'))
+                {
+                    startingBeat.Text = "0" + startingBeat.Text;
+                }
+            };
+
             endingBeatLabel = new Label
             {
                 Text = "until beat",
@@ -442,6 +512,20 @@ namespace Event_Randomizer
                 }
             };
 
+            endingBeat.Leave += (sender, e) =>
+            {
+                if (endingBeat.Text.Equals(""))
+                {
+                    endingBeat.Text = "0";
+                    return;
+                }
+
+                if (endingBeat.Text[0].Equals('.'))
+                {
+                    endingBeat.Text = "0" + endingBeat.Text;
+                }
+            };
+
             // RANDOMIZER BUTTON
             randomizeButton = new Button
             {
@@ -462,7 +546,7 @@ namespace Event_Randomizer
                 if (propertyBox.SelectedItem.Equals("no properties found"))
                 { outBox("Please provide an event."); return; }
 
-                if (stepSize.Text.Equals("0"))
+                if (double.Parse(stepSize.Text, CultureInfo.InvariantCulture) == 0)
                 { outBox("Placing an event every 0 beats is not possible."); return; }
 
                 if (double.Parse(minValueBox.Text, CultureInfo.InvariantCulture) > double.Parse(maxValueBox.Text, CultureInfo.InvariantCulture))

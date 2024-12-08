@@ -7,33 +7,54 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-		<PublishSingleFile>false</PublishSingleFile>
-		<SelfContained>false</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
 		<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
 		<StartupObject>Event_Randomizer.EventRandomizerForm</StartupObject>
-		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\EventRandomizer\</BaseOutputPath>
+		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\</BaseOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Remove="bin\**" />
 	  <Compile Remove="build output\**" />
+	  <Compile Remove="Launcher\**" />
 	  <Compile Remove="Properties\**" />
 	  <Compile Remove="Resources\**" />
 	  <Compile Remove="Text to Image\**" />
 	  <EmbeddedResource Remove="bin\**" />
 	  <EmbeddedResource Remove="build output\**" />
+	  <EmbeddedResource Remove="Launcher\**" />
 	  <EmbeddedResource Remove="Properties\**" />
 	  <EmbeddedResource Remove="Resources\**" />
 	  <EmbeddedResource Remove="Text to Image\**" />
 	  <None Remove="bin\**" />
 	  <None Remove="build output\**" />
+	  <None Remove="Launcher\**" />
 	  <None Remove="Properties\**" />
 	  <None Remove="Resources\**" />
 	  <None Remove="Text to Image\**" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Launcher.cs" />
 	  <Compile Remove="Text to Image.cs" />
+	  <Compile Remove="Text to Image.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="Launcher.resx" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove=".gitattributes" />
+	  <None Remove=".gitignore" />
+	  <None Remove="how to get event randomizer to not break.txt" />
+	  <None Remove="LICENSE.txt" />
+	  <None Remove="README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
 	</ItemGroup>
 	
 </Project>

@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -9,6 +11,41 @@ namespace Event_Randomizer
         public EventRandomizerForm()
         {
             InitializeComponents();
+        }
+
+        private static readonly Random random = new Random();
+
+        public double RandomValue()
+        {
+            // Parse min, max, and round values from input
+            double minValue = double.Parse(minValueBox.Text, CultureInfo.InvariantCulture);
+            double maxValue = double.Parse(maxValueBox.Text, CultureInfo.InvariantCulture);
+            double valueRound = double.Parse(roundValueBox.Text, CultureInfo.InvariantCulture);
+
+            double counter;
+
+            if (addMinimumCheck.Checked == false)
+            {
+                counter = 0;
+
+                while (counter < minValue)
+                {
+                    counter = counter + valueRound;
+                }
+            }
+            else
+            {
+                counter = minValue;
+            }
+
+            List<double> possible = new List<double>();
+
+            for (; counter <= maxValue; counter = counter + valueRound)
+            {
+                possible.Add(counter);
+            }
+
+            return possible[(int)(random.NextDouble()*possible.Count)];
         }
 
         public void outBox(string input)
@@ -51,11 +88,39 @@ namespace Event_Randomizer
                 foundProperties.Clear();
 
                 // Use a regular expression to find words in quotation marks
-                var matches = System.Text.RegularExpressions.Regex.Matches(text, "\"([^\"]+?)\":");
+                var matches = System.Text.RegularExpressions.Regex.Matches(text, "\"([^\"]+?)\":-?[0-9]+(?:\\.[0-9]+)?");
 
                 foreach (var match in matches)
                 {
-                    foundProperties.Add(match.ToString().Trim(':').Trim('"')); // Remove quotation marks and add to the list
+                    string temp = match.ToString();
+
+                    while (true)
+                    {
+                        if (temp[0].Equals('"'))
+                        {
+                            temp = temp.Substring(1);
+                            break;
+                        }
+                        else
+                        {
+                            temp = temp.Substring(1);
+                        }
+                    }
+
+                    while (true)
+                    {
+                        if (temp[temp.Length - 1].Equals('"'))
+                        {
+                            temp = temp.Substring(0, temp.Length - 1);
+                            break;
+                        }
+                        else
+                        {
+                            temp = temp.Substring(0, temp.Length - 1);
+                        }
+                    }
+
+                    foundProperties.Add(temp);
                 }
 
                 // Populate property box with elements from the list
@@ -404,69 +469,117 @@ namespace Event_Randomizer
                 { outBox("Make sure that the minimum value is not greater than the maximum value."); return; }
 
                 eventOutput = "";
-                Random random = new Random();
 
-                // remove start and end commas to make the tag syntax work
+                // remove start and end characters until it hits { and } to make the tag syntax work
                 string inputEvent = eventInput.Text;
-                if (inputEvent[0].Equals(','))
-                    inputEvent = inputEvent.Substring(1);
-                if (inputEvent[inputEvent.Length - 1].Equals(','))
-                    inputEvent = inputEvent.Substring(0, inputEvent.Length - 1);
+                while (true)
+                {
+                    if (new[] { ',', ' ', '\n', '\r', '[', ']' }.Contains(inputEvent[0]))
+                    {
+                        inputEvent = inputEvent.Substring(1);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                while (true)
+                {
+                    if (new[] { ',', ' ', '\n', '\r', '[', ']' }.Contains(inputEvent[inputEvent.Length - 1]))
+                    {
+                        inputEvent = inputEvent.Substring(0, inputEvent.Length - 1);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                string replaced = inputEvent;
+
+                if (acrossTime.Checked == false)
+                {
+                    double randomValue = RandomValue();
+                    // pattern for "<property>":<number>
+                    string pattern = @$"\""{propertyBox.Text}\"":-?[0-9]*\.?[0-9]+";
+                    // Replacement string with the new value
+                    string replacement = $"\"{propertyBox.Text}\":{randomValue.ToString(CultureInfo.InvariantCulture)}";
+
+                    try
+                    {
+                        // Replace the "property" value in the input string
+                        eventOutput = Regex.Replace(replaced, pattern, replacement) + ",\r\n";
+                    }
+                    catch { outBox("Something went wrong while replacing properties. (pt. 0)"); return; }
+
+                    outBox("all done. :)");
+                    return;
+                }
 
                 double counter = double.Parse(startingBeat.Text, CultureInfo.InvariantCulture);
                 double threshold = double.Parse(endingBeat.Text, CultureInfo.InvariantCulture);
-                string replaced = "";
-                for (; counter <= threshold; counter = counter + double.Parse(stepSize.Text, CultureInfo.InvariantCulture))
+                double step = double.Parse(stepSize.Text, CultureInfo.InvariantCulture);
+
+                for (; counter <= threshold; counter = counter + step)
                 {
+                    string randomValue = RandomValue().ToString(CultureInfo.InvariantCulture);
+                    string timing = counter.ToString(CultureInfo.InvariantCulture);
+
                     try
                     {
-                        // Parse min, max, and round values from input
-                        double minValue = double.Parse(minValueBox.Text, CultureInfo.InvariantCulture);
-                        double maxValue = double.Parse(maxValueBox.Text, CultureInfo.InvariantCulture);
-                        double valueRound = double.Parse(roundValueBox.Text, CultureInfo.InvariantCulture);
-
-                        double randomValue = maxValue + 1;
-                        while (randomValue > maxValue || randomValue < minValue)
-                        {
-                            // Generate a random value between minValue and maxValue
-                            randomValue = minValue + (random.NextDouble() * (maxValue - minValue));
-
-                            // Round to the nearest multiple of valueRound
-                            if (valueRound != 0)
-                                randomValue = Math.Round(randomValue / valueRound) * valueRound;
-
-                            if (addMinimumCheck.Checked)
-                                randomValue = randomValue + minValue;
-                        }
-
                         try
                         {
-                            // Regex pattern to find "property" and its value
-                            string pattern = @$"\""{propertyBox.Text}\"":-?[0-9]*\.?[0-9]+"; // Matches "property": followed by a number
+                            // pattern for "<time>":<number>
+                            string pattern = @"\""time\"":-?[0-9]*\.?[0-9]+";
                             // Replacement string with the new value
-                            string replacement = $"\"{propertyBox.Text}\":{randomValue.ToString(CultureInfo.InvariantCulture)}";
-                            // Replace the "property" value in the input string
-                            replaced = Regex.Replace(inputEvent, pattern, replacement) + ",\n";
+                            string replacement = $"\"time\":{counter.ToString(CultureInfo.InvariantCulture)}";
 
-                            // Regex pattern to find "time" and its value
-                            pattern = @"\""time\"":-?[0-9]*\.?[0-9]+"; // Matches "time": followed by a number
+                            try
+                            {
+                                // Check if the pattern exists in the string
+                                if (Regex.IsMatch(replaced, pattern))
+                                {
+                                    // Replace the "time" value in the input string
+                                    replaced = Regex.Replace(replaced, pattern, replacement);
+                                }
+                                else
+                                {
+                                    replaced = replaced.Substring(0, inputEvent.Length - 1) + $",\"time\":{timing}" + "}";
+                                }
+                            }
+                            catch { outBox("Something went wrong while replacing the time value."); return; }
+
+                            // pattern for "<property>":<number>
+                            pattern = @$"\""{propertyBox.Text}\"":-?[0-9]*\.?[0-9]+";
                             // Replacement string with the new value
-                            replacement = $"\"time\":{counter.ToString(CultureInfo.InvariantCulture)}";
-                            // Replace the "time" value in the input string
-                            eventOutput = eventOutput + Regex.Replace(replaced, pattern, replacement);
+                            replacement = $"\"{propertyBox.Text}\":{randomValue}";
+
+                            try
+                            {
+                                // Replace the "property" value in the input string
+                                replaced = Regex.Replace(replaced, pattern, replacement);
+                            }
+                            catch { outBox("Something went wrong while replacing the property value."); return; }
+
+                            eventOutput = eventOutput + replaced + ",\r\n";
+
                         }
                         catch
                         {
                             outBox("Something went wrong.");
+                            return;
                         }
-
-                        outBox("all done. :)");
                     }
                     catch
                     {
                         outBox("Please make sure min value and max value are set to a number.");
+                        return;
                     }
                 }
+
+                outBox("all done. :)");
+                return;
             };
 
             // OUTPUT BOX
@@ -490,6 +603,12 @@ namespace Event_Randomizer
 
             openOutput.Click += (sender, e) =>
             {
+                if (eventOutput.Equals(""))
+                {
+                    outBox("Your output seems to be empty.");
+                    return;
+                }
+
                 // Create a new Form
                 Form outputForm = new Form();
                 outputForm.Text = "Event Output";
@@ -524,6 +643,12 @@ namespace Event_Randomizer
 
             copyOutput.Click += (sender, e) =>
             {
+                if (eventOutput.Equals(""))
+                {
+                    outBox("Your output seems to be empty.");
+                    return;
+                }
+
                 Clipboard.SetText(eventOutput);
             };
 
@@ -538,6 +663,12 @@ namespace Event_Randomizer
 
             saveAsTag.Click += (sender, e) =>
             {
+                if (eventOutput.Equals(""))
+                {
+                    outBox("Your output seems to be empty.");
+                    return;
+                }
+
                 using (SaveFileDialog saveFileDialog = new SaveFileDialog())
                 {
                     saveFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"; // filter for .json files

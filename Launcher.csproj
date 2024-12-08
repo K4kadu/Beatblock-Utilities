@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<PublishSingleFile>false</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+		<StartupObject>Launcher.LauncherForm</StartupObject>
+		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\</BaseOutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="bin\**" />
+		<Compile Remove="build output\**" />
+		<Compile Remove="Event Randomizer\**" />
+		<Compile Remove="Properties\**" />
+		<Compile Remove="Resources\**" />
+		<Compile Remove="Text to Image\**" />
+		<EmbeddedResource Remove="bin\**" />
+		<EmbeddedResource Remove="build output\**" />
+		<EmbeddedResource Remove="Event Randomizer\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="Resources\**" />
+		<EmbeddedResource Remove="Text to Image\**" />
+		<None Remove="bin\**" />
+		<None Remove="build output\**" />
+		<None Remove="Event Randomizer\**" />
+		<None Remove="Properties\**" />
+		<None Remove="Resources\**" />
+		<None Remove="Text to Image\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Event Randomizer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
+		<None Remove="how to get event randomizer to not break.txt" />
+		<None Remove="LICENSE.txt" />
+		<None Remove="README.md" />
+	</ItemGroup>
+
+</Project>

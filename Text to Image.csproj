@@ -4,38 +4,51 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-		<PublishSingleFile>false</PublishSingleFile>
-		<SelfContained>false</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
 		<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
 		<StartupObject>Text_to_Image.TextToImageForm</StartupObject>
-		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\TextToImage\</BaseOutputPath>
+		<BaseOutputPath>C:\Users\k4kad\source\repos\Beatblock Utilities\build output\</BaseOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <Compile Remove="bin\**" />
 	  <Compile Remove="build output\**" />
 	  <Compile Remove="Event Randomizer\**" />
+	  <Compile Remove="Launcher\**" />
 	  <Compile Remove="Properties\**" />
 	  <EmbeddedResource Remove="bin\**" />
 	  <EmbeddedResource Remove="build output\**" />
 	  <EmbeddedResource Remove="Event Randomizer\**" />
+	  <EmbeddedResource Remove="Launcher\**" />
 	  <EmbeddedResource Remove="Properties\**" />
 	  <None Remove="bin\**" />
 	  <None Remove="build output\**" />
 	  <None Remove="Event Randomizer\**" />
+	  <None Remove="Launcher\**" />
 	  <None Remove="Properties\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Remove="Event Randomizer.cs" />
+	  <Compile Remove="Launcher.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+	    <None Remove=".editorconfig" />
+	    <None Remove=".gitattributes" />
+	    <None Remove=".gitignore" />
+	    <None Remove="how to get event randomizer to not break.txt" />
+	    <None Remove="LICENSE.txt" />
+	    <None Remove="README.md" />
 	    <None Remove="Resources\DigitalDisco-Thin.ttf" />
 	    <EmbeddedResource Include="Resources\DigitalDisco-Thin.ttf" />
+	    <EditorConfigFiles Remove="C:\Users\k4kad\source\repos\Beatblock Utilities\.editorconfig" />
+	    <EmbeddedResource Remove="Launcher.resx" />
 	</ItemGroup>
 	
 </Project>

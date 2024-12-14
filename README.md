@@ -1,5 +1,6 @@
 # About Beatblock Utilities
 Beatblock Utilities is a collection of external Windows Forms apps to help with Beatblock custom map creation.
+<br /> Upon running an app you might get a popup like "Windows protected your PC" which is not triggered by the file containing possibly malicious code, but instead it does that for all programs that aren't specifically registered at Microsoft. To still be able to use the tool, just click on "More info" and then "Run anyway".
 
 # How to install
 ## If you don't want to install anything:

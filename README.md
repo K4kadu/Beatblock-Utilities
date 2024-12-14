@@ -19,7 +19,7 @@ Generates a strictly two colored (black & transparent) .png from any text you in
 
 ## Event Randomizer
 Takes an event string from a Beatblock .json as input and lets you randomize one of the values in it + optionally repeat the process for different timings.
-<br /> Let's say for example that you want to place mines at a random angle from 45° to 135°, every 1/8 beats from time 0 to 10. You would then place a mine ingame **and save**, go to your chart file and copy something like {"type":"mine","time":1,"angle":90} over to the Event Randomizer and then all that is left is for you to set your other parameters, based on what numbers you want as possible outputs. In this case that would be:
+<br /><br /> Let's say for example that you want to place mines at a random angle from 45° to 135°, every 1/8 beats from time 0 to 10. You would then place a mine ingame **and save**, go to your chart file and copy something like {"type":"mine","time":1,"angle":90} over to the Event Randomizer and then all that is left is for you to set your other parameters, based on what numbers you want as possible outputs. In this case that would be:
 - what you want to randomize: angle
 - minimum: 45 <t/> maximum: 135
 - repeat in time for: "every 1/8 beats" -> 0.125

@@ -18,8 +18,10 @@ namespace Text_to_Image
 
         public TextToImageForm()
         {
+            LoadDigitalDisco();
             InitializeComponent();
             PopulateFontPicker();
+            InputText.Font = new System.Drawing.Font(digDisc.Families[0], 10, FontStyle.Regular);
         }
 
         public void outBox(string input)
@@ -62,6 +64,34 @@ namespace Text_to_Image
 
             return croppedBitmap;
 
+        }
+
+        PrivateFontCollection digDisc = new PrivateFontCollection();
+
+        public void LoadDigitalDisco()
+        {
+            // Load the custom font from embedded resource
+            using (Stream fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Text_to_Image.Resources.DigitalDisco-Thin.ttf"))
+            {
+                if (fontStream == null)
+                {
+                    outBox("DigitalDisco-thin couldn't be found. :(");
+                    return;
+                }
+
+                byte[] fontData = new byte[fontStream.Length];
+                fontStream.Read(fontData, 0, (int)fontStream.Length);
+
+                // Create an unmanaged memory block for the font data
+                IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+                System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+
+                // Add the font to the PrivateFontCollection
+                digDisc.AddMemoryFont(fontPtr, fontData.Length);
+
+                // Free the unmanaged memory
+                System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+            }
         }
 
         public void PopulateFontPicker()
@@ -171,6 +201,7 @@ namespace Text_to_Image
             FontPicker.Size = new Size(194, 23);
             FontPicker.TabIndex = 6;
             FontPicker.Visible = false;
+            FontPicker.SelectedIndexChanged += FontPicker_SelectedIndexChanged;
             // 
             // TextToImageForm
             // 
@@ -227,16 +258,9 @@ namespace Text_to_Image
                 customFont = new System.Drawing.Font(FontPicker.SelectedItem.ToString(), float.Parse(FontSize.Text, CultureInfo.InvariantCulture));
             }
             else
-            { 
-                // Load the custom font from embedded resource
-                PrivateFontCollection fontCollection = new PrivateFontCollection();
-                using (Stream fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Text_to_Image.Resources.DigitalDisco-Thin.ttf"))
-                {
-                    if (fontStream == null)
-                    {
-                        outBox("Font couldn't be found. :(");
-                        return;
-                    }
+            {
+                customFont = new System.Drawing.Font(digDisc.Families[0], float.Parse(FontSize.Text, CultureInfo.InvariantCulture), FontStyle.Regular);
+            }
 
             using (Graphics tempGraphics = Graphics.FromImage(new Bitmap(1, 1)))
             {
@@ -322,10 +346,20 @@ namespace Text_to_Image
             if (CustomFontCheck.Checked)
             {
                 FontPicker.Show();
+                InputText.Font = new System.Drawing.Font(FontPicker.SelectedItem.ToString(), 10);
             }
             else
             {
                 FontPicker.Hide();
+                InputText.Font = new System.Drawing.Font(digDisc.Families[0], 10, FontStyle.Regular);
+            }
+        }
+
+        private void FontPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FontPicker.SelectedIndex == -1 || CustomFontCheck.Checked)
+            {
+                InputText.Font = new System.Drawing.Font(FontPicker.SelectedItem.ToString(), 10);
             }
         }
     }

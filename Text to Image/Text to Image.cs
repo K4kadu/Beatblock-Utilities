@@ -238,23 +238,6 @@ namespace Text_to_Image
                         return;
                     }
 
-                    byte[] fontData = new byte[fontStream.Length];
-                    fontStream.Read(fontData, 0, (int)fontStream.Length);
-
-                    // Create an unmanaged memory block for the font data
-                    IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
-                    System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
-
-                    // Add the font to the PrivateFontCollection
-                    fontCollection.AddMemoryFont(fontPtr, fontData.Length);
-
-                    // Free the unmanaged memory
-                    System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
-                }
-
-                customFont = new System.Drawing.Font(fontCollection.Families[0], float.Parse(FontSize.Text, CultureInfo.InvariantCulture), FontStyle.Regular);
-            }
-
             using (Graphics tempGraphics = Graphics.FromImage(new Bitmap(1, 1)))
             {
                 int width = (int)Math.Ceiling(tempGraphics.MeasureString(text, customFont).Width);
